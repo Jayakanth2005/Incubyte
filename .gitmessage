@@ -1,0 +1,32 @@
+# Commit Message Template for AI Co-Authorship
+
+# Format:
+# <type>: <subject>
+#
+# <body>
+#
+# Co-authored-by: Google Gemini <gemini@google.com>
+
+# Types:
+# feat:     A new feature
+# fix:      A bug fix
+# docs:     Documentation changes
+# style:    Code style changes (formatting, etc)
+# refactor: Code refactoring
+# test:     Adding or updating tests
+# chore:    Maintenance tasks
+
+# Example:
+# feat: Implement user authentication
+#
+# Added JWT-based authentication with login and register endpoints.
+# Used Gemini to generate initial controller structure and validation logic.
+# Manually added custom error handling and security measures.
+#
+# Co-authored-by: Google Gemini <gemini@google.com>
+
+# Guidelines for AI Usage Documentation:
+# 1. Be specific about what AI generated vs what you wrote
+# 2. Mention how you modified/improved AI suggestions
+# 3. Always add Co-authored-by for AI-assisted commits
+# 4. Be honest about the extent of AI usage
