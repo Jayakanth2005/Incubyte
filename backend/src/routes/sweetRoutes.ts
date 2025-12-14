@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { SweetController, sweetValidation } from '../controllers/sweetController';
 import { authenticate, requireAdmin } from '../middleware/auth';
 import { validate } from '../middleware/validate';
+import { upload } from '../middleware/upload';
 
 const router = Router();
 
@@ -15,8 +16,8 @@ router.get('/:id', SweetController.getById);
 router.post('/:id/purchase', sweetValidation.purchase, validate, SweetController.purchase);
 
 // Admin only routes
-router.post('/', requireAdmin, sweetValidation.create, validate, SweetController.create);
-router.put('/:id', requireAdmin, sweetValidation.update, validate, SweetController.update);
+router.post('/', requireAdmin, upload.single('image'), sweetValidation.create, validate, SweetController.create);
+router.put('/:id', requireAdmin, upload.single('image'), sweetValidation.update, validate, SweetController.update);
 router.delete('/:id', requireAdmin, SweetController.delete);
 router.post('/:id/restock', requireAdmin, sweetValidation.restock, validate, SweetController.restock);
 

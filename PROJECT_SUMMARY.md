@@ -2,11 +2,11 @@
 
 ## ✅ What Has Been Created
 
-### Backend (Node.js/TypeScript/Express/PostgreSQL)
+### Backend (Node.js/TypeScript/Express/Sqlite)
 
 #### Core Files
 - ✅ **Database Layer**
-  - `src/database/db.ts` - PostgreSQL connection pool
+  - `src/database/db.ts` - Sqlite connection pool
   - `src/database/migrate.ts` - Database migrations
   - `src/database/seed.ts` - Sample data seeding
 

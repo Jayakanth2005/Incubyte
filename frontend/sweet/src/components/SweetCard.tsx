@@ -51,10 +51,17 @@ const SweetCard: React.FC<SweetCardProps> = ({
     const isOutOfStock = sweet.quantity === 0;
     const isLowStock = sweet.quantity > 0 && sweet.quantity < 10;
 
+    // Handle image URL - if it starts with /, prepend backend URL
+    const getImageUrl = (url?: string) => {
+        if (!url) return null;
+        if (url.startsWith('http')) return url;
+        return `http://localhost:5000${url}`;
+    };
+
     return (
         <div className="sweet-card">
             {sweet.image_url ? (
-                <img src={sweet.image_url} alt={sweet.name} className="sweet-image" />
+                <img src={getImageUrl(sweet.image_url) || ''} alt={sweet.name} className="sweet-image" />
             ) : (
                 <div className="sweet-image" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '3rem' }}>
                     🍬

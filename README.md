@@ -68,6 +68,71 @@ The Sweet Shop Management System is a modern, full-stack application built with 
    ```
    Frontend runs at `http://localhost:5173`
 
+## 🐳 Docker Deployment (Recommended for Production)
+
+### Prerequisites
+- Docker Desktop installed and running
+- Docker Compose
+
+### Quick Start with Docker
+
+1. **Start Docker Desktop**
+   - Ensure Docker Desktop is running (check system tray icon)
+
+2. **Build and Start Containers**
+   ```bash
+   docker-compose build
+   docker-compose up -d
+   ```
+
+3. **Seed the Database**
+   ```bash
+   docker-compose exec backend npm run seed
+   ```
+
+4. **Access the Application**
+   - Frontend: http://localhost:5173
+   - Backend API: http://localhost:5000
+
+### Docker Commands
+
+**View running containers:**
+```bash
+docker-compose ps
+```
+
+**View logs:**
+```bash
+docker-compose logs -f
+```
+
+**Stop containers:**
+```bash
+docker-compose down
+```
+
+**Rebuild after code changes:**
+```bash
+docker-compose build
+docker-compose up -d
+```
+
+**Reset everything (including database):**
+```bash
+docker-compose down -v
+docker-compose build
+docker-compose up -d
+docker-compose exec backend npm run seed
+```
+
+### What's Included in Docker Setup
+- ✅ Backend (Node.js 18 Alpine)
+- ✅ Frontend (Vite production build)
+- ✅ SQLite database with persistent volume
+- ✅ Image upload support with persistent storage
+- ✅ Automatic database migrations on startup
+- ✅ Production-optimized builds
+
 ## ✨ Features
 
 ### For Customers
@@ -264,6 +329,32 @@ cd backend
 rm database.sqlite
 npm run migrate
 npm run seed  # Optional: add sample data
+```
+
+### Docker Issues
+
+**Error: "Cannot connect to Docker daemon"**
+- Start Docker Desktop and wait for it to fully initialize
+- Check if Docker is running: `docker ps`
+
+**Error: "Ports are not available"**
+- Stop local dev servers (`npm run dev`) before starting Docker containers
+- Or change ports in `docker-compose.yml`
+
+**Images not updating after code changes**
+```bash
+docker-compose build --no-cache
+docker-compose up -d
+```
+
+**Database not persisting in Docker**
+- Check volumes: `docker volume ls`
+- The `incubyte_sqlite_data` volume should exist
+
+**View container logs**
+```bash
+docker-compose logs backend
+docker-compose logs frontend
 ```
 
 ## 🤖 AI Usage

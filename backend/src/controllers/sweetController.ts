@@ -36,7 +36,15 @@ export class SweetController {
      */
     static async create(req: AuthRequest, res: Response) {
         try {
-            const { name, category, price, quantity, description, image_url } = req.body;
+            const { name, category, price, quantity, description } = req.body;
+            const file = req.file;
+
+            // Generate image URL from uploaded file
+            let image_url: string | undefined = undefined;
+            if (file) {
+                // Store relative path that can be accessed via /uploads/filename
+                image_url = `/uploads/${file.filename}`;
+            }
 
             const sweet = await SweetModel.create({
                 name,
@@ -115,10 +123,16 @@ export class SweetController {
         try {
             const id = parseInt(req.params.id);
             const updates = req.body;
+            const file = req.file;
 
             // Convert string numbers to proper types
             if (updates.price) updates.price = parseFloat(updates.price);
             if (updates.quantity) updates.quantity = parseInt(updates.quantity);
+
+            // Handle uploaded image
+            if (file) {
+                updates.image_url = `/uploads/${file.filename}`;
+            }
 
             const sweet = await SweetModel.update(id, updates);
 

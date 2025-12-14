@@ -61,13 +61,13 @@ export class SweetModel {
         let paramCount = 1;
 
         if (params.name) {
-            query += ` AND name ILIKE $${paramCount}`;
+            query += ` AND name LIKE $${paramCount}`;
             values.push(`%${params.name}%`);
             paramCount++;
         }
 
         if (params.category) {
-            query += ` AND category ILIKE $${paramCount}`;
+            query += ` AND category LIKE $${paramCount}`;
             values.push(`%${params.category}%`);
             paramCount++;
         }

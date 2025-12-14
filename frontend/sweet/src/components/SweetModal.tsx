@@ -25,12 +25,17 @@ const SweetModal: React.FC<SweetModalProps> = ({ sweet, onClose }) => {
         description: '',
         image_url: '',
     });
+    const [imageFile, setImageFile] = useState<File | null>(null);
+    const [imagePreview, setImagePreview] = useState<string>('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
     useEffect(() => {
         if (sweet) {
             setFormData(sweet);
+            if (sweet.image_url) {
+                setImagePreview(`http://localhost:5000${sweet.image_url}`);
+            }
         }
     }, [sweet]);
 
@@ -41,16 +46,42 @@ const SweetModal: React.FC<SweetModalProps> = ({ sweet, onClose }) => {
         });
     };
 
+    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            setImageFile(file);
+            // Create preview URL
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setImagePreview(reader.result as string);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError('');
         setLoading(true);
 
         try {
+            // Create FormData for file upload
+            const data = new FormData();
+            data.append('name', formData.name);
+            data.append('category', formData.category);
+            data.append('price', formData.price);
+            data.append('quantity', formData.quantity.toString());
+            if (formData.description) {
+                data.append('description', formData.description);
+            }
+            if (imageFile) {
+                data.append('image', imageFile);
+            }
+
             if (sweet?.id) {
-                await sweetAPI.update(sweet.id, formData);
+                await sweetAPI.update(sweet.id, data);
             } else {
-                await sweetAPI.create(formData);
+                await sweetAPI.create(data);
             }
             onClose();
         } catch (err: any) {
@@ -143,15 +174,28 @@ const SweetModal: React.FC<SweetModalProps> = ({ sweet, onClose }) => {
                     </div>
 
                     <div className="form-group">
-                        <label className="form-label">Image URL (Optional)</label>
+                        <label className="form-label">Image (Optional)</label>
                         <input
-                            type="url"
-                            name="image_url"
+                            type="file"
+                            accept="image/*"
                             className="form-control"
-                            placeholder="https://example.com/image.jpg"
-                            value={formData.image_url}
-                            onChange={handleChange}
+                            onChange={handleImageChange}
+                            style={{ padding: '0.5rem' }}
                         />
+                        {imagePreview && (
+                            <div style={{ marginTop: '1rem' }}>
+                                <img
+                                    src={imagePreview}
+                                    alt="Preview"
+                                    style={{
+                                        maxWidth: '200px',
+                                        maxHeight: '200px',
+                                        borderRadius: '8px',
+                                        objectFit: 'cover'
+                                    }}
+                                />
+                            </div>
+                        )}
                     </div>
 
                     <div style={{ display: 'flex', gap: '1rem', marginTop: '1.5rem' }}>
